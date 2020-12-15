@@ -22,6 +22,7 @@ namespace Compiler
         private byte numofForeachStatements;
         private byte numofParams;
         private readonly string Filename;
+        private readonly string GscPath;
         private readonly AnimTree _animTree = new AnimTree();
         private readonly List<int> LoopsStart = new List<int>();
         private readonly List<OP> ContinueHistory = new List<OP>();
@@ -32,11 +33,12 @@ namespace Compiler
             get { return CompiledPub.ToArray(); }
         }
 
-        public ScriptCompiler(ParseTree tree, string path)
+        public ScriptCompiler(ParseTree tree, string path, string path_in_gsc)
         {
             CompiledPub.Clear();
             Tree = tree;
-            Filename = path.Replace(".txt", ".gsc");
+            Filename = path;
+            GscPath = path_in_gsc;
         }
 
         private void SetAlignedWord(byte offset = 0)
@@ -188,7 +190,7 @@ namespace Compiler
                 return false;
             }
             CompiledPub.AddRange(new byte[64]);
-            AddString("maps/mp/_zm_modding.gsc");
+            AddString(GscPath);
             PrepareStrings(Tree.Root);
             int includesNodeIndex = Tree.Root.ChildNodes.FindIndex(e => e.Term.Name == "includes");
             int functionsNodeIndex = Tree.Root.ChildNodes.FindIndex(e => e.Term.Name == "functions");
@@ -233,11 +235,11 @@ namespace Compiler
             file.Size2 = CompiledPub.Count;
             file.Header = new byte[] { 0x80, 0x47, 0x53, 0x43, 0x0D, 0x0A, 0x00, 0x06 };
             file.Name = 0x40;
-            Directory.CreateDirectory(Path.GetDirectoryName(Filename) + @"\Compiled\");
-            using (var writer = File.Create(Path.GetDirectoryName(Filename) + @"\Compiled\" + Path.GetFileName(Filename)))
-            {
-                writer.Write(CompiledPub.ToArray(), 0, CompiledPub.Count);
-            }
+            //Directory.CreateDirectory(@"Compiled\");
+            //using (var writer = File.Create(@"Compiled\" + Path.GetFileName(Filename)))
+            //{
+                //writer.Write(CompiledPub.ToArray(), 0, CompiledPub.Count);
+            //}
             return true;
         }
 

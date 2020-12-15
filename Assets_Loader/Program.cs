@@ -32,7 +32,7 @@ namespace Assets_Loader
                     {
                         var grammar = new GSCGrammar();
                         var parser = new Parser(grammar);
-                        var compiler = new ScriptCompiler(parser.Parse(File.ReadAllText(file)), file);
+                        var compiler = new ScriptCompiler(parser.Parse(File.ReadAllText(file)), file, "maps/mp/_zm_modding.gsc");
                         if(!compiler.Init())
                             return;
                         compiledScript = compiler.Compiled;
