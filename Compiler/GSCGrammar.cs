@@ -186,7 +186,7 @@ namespace Compiler
             switchContent.Rule = switchLabel + blockContent | switchLabel;
             switchStatement.Rule = ToTerm("switch") + parenExpr + "{" + switchContents + "}";
             conditionalStatement.Rule = expr + "?" + expr + ":" + expr;
-            developerScript.Rule = ToTerm("/#") + blockContent + "#/";
+            developerScript.Rule = ToTerm("/#") + blockContent + "#/" | ToTerm("/#") + "#/";
             Root = program;
         }
     }
